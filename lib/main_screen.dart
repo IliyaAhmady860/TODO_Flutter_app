@@ -27,6 +27,10 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Inside your build method
+    final pendingTasks = _tasks.where((task) => !task.isDone).toList();
+    final completedTasks = _tasks.where((task) => task.isDone).toList();
+
     return DefaultTabController(
       length: 2,
 
@@ -47,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           ),
         ),
-        body: Column(
+        body: TabBarView(
           children: [
             Expanded(
               child: ListView.builder(

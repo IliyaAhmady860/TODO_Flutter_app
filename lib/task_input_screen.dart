@@ -40,9 +40,7 @@ class _TaskInputState extends State<TaskInput> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 controller: nameFieldController,
-                style: const TextStyle(
-                  color: Colors.white,
-                ), // Makes typed text visible
+                style: const TextStyle(color: Colors.white),
                 validator: (value) => (value == null || value.isEmpty)
                     ? "Name is required"
                     : null,
@@ -52,29 +50,20 @@ class _TaskInputState extends State<TaskInput> {
                   counterStyle: const TextStyle(color: Colors.white),
 
                   filled: true,
-                  fillColor: const Color.fromARGB(
-                    255,
-                    63,
-                    78,
-                    91,
-                  ), // Matches your AppBar
+                  fillColor: const Color.fromARGB(255, 63, 78, 91),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 15,
                   ),
                   labelText: "Task Name",
                   labelStyle: const TextStyle(color: Colors.white70),
-                  // Use enabledBorder to define the "idle" state
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none, // Removes the ugly black line
+                    borderSide: BorderSide.none,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide(
-                      color: Colors.blue,
-                      width: 1,
-                    ), // Subtle blue glow when typing
+                    borderSide: const BorderSide(color: Colors.blue, width: 1),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),

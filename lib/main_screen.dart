@@ -15,7 +15,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    _loadTasks(); // Load data from SharedPreferences on startup
+    _loadTasks();
   }
 
   void _loadTasks() {
@@ -41,9 +41,9 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: _tasks.length, // Set the actual length
+              itemCount: _tasks.length,
               itemBuilder: (BuildContext context, index) {
-                final task = _tasks[index]; // Get the specific task
+                final task = _tasks[index];
                 return Container(
                   margin: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -78,7 +78,6 @@ class _MainScreenState extends State<MainScreen> {
               },
             ),
           ),
-          // Instruction bar at the bottom
           Container(
             height: MediaQuery.of(context).size.height * 0.08,
             width: double.infinity,
@@ -95,9 +94,7 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton: FloatingActionButton.small(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
         onPressed: () async {
-          // Wait for the user to come back from the input screen
           await Navigator.of(context).pushNamed("/task_input_screen");
-          // Refresh the list immediately after they return
           _loadTasks();
         },
         backgroundColor: Colors.blue,

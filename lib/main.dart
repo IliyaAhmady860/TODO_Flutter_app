@@ -5,7 +5,7 @@ import 'services/storage_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await StorageService.init(); // Initialize the service
+  await StorageService.init();
   runApp(MainApp());
 }
 
@@ -15,8 +15,6 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // Remove 'home: const MainScreen()'
-      // Use initialRoute instead to avoid conflicts with the routes table
       initialRoute: '/',
       routes: {
         '/': (context) => const MainScreen(),

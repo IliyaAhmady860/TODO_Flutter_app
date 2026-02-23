@@ -27,116 +27,105 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Inside your build method
     final pendingTasks = _tasks.where((task) => !task.isDone).toList();
     final completedTasks = _tasks.where((task) => task.isDone).toList();
 
     return DefaultTabController(
       length: 2,
-
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 52, 64, 86),
         appBar: AppBar(
           bottom: const TabBar(
+            labelColor: Colors.blue,
+            unselectedLabelColor: Colors.white60,
             tabs: [
-              Tab(icon: Icon(Icons.pending_actions)),
-              Tab(icon: Icon(Icons.done)),
+              Tab(icon: Icon(Icons.pending_actions), text: "Pending"),
+              Tab(icon: Icon(Icons.done_all), text: "Done"),
             ],
           ),
           backgroundColor: const Color.fromARGB(255, 63, 78, 91),
-          title: const Center(
-            child: Text(
-              "To do list",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ),
+          title: const Text("To Do List"),
+          centerTitle: true,
         ),
         body: TabBarView(
           children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: _tasks.length,
-                itemBuilder: (BuildContext context, index) {
-                  final task = _tasks[index];
-                  return Slidable(
-                    endActionPane: ActionPane(
-                      motion: const ScrollMotion(),
-                      extentRatio: 0.25,
-                      children: [
-                        SlidableAction(
-                          onPressed: (context) {
-                            setState(() {
-                              StorageService.deleteFromTaskList(index);
-                              _loadTasks();
-                            });
-                          },
-                          backgroundColor: Colors.red,
-                          foregroundColor: Colors.white,
-                          icon: Icons.delete,
-                          label: 'Delete',
-                        ),
-                      ],
-                    ),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: const Color.fromARGB(255, 211, 193, 211),
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          task.taskName,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          task.taskDescription,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.done, color: Colors.red),
-                          onPressed: () {
-                            setState(() {
-                              StorageService.isTaskDone(index);
-                              _loadTasks();
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.08,
-              width: double.infinity,
-              color: const Color.fromARGB(255, 63, 78, 91),
-              child: const Center(
-                child: Text(
-                  "Press the + Button to add new tasks",
-                  style: TextStyle(color: Colors.white70),
-                ),
-              ),
-            ),
+            _buildTaskList(pendingTasks),
+            _buildTaskList(completedTasks),
           ],
         ),
         floatingActionButton: FloatingActionButton.small(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),
+          backgroundColor: Colors.blue,
           onPressed: () async {
             await Navigator.of(context).pushNamed("/task_input_screen");
             _loadTasks();
           },
-          backgroundColor: Colors.blue,
           child: const Icon(Icons.add),
         ),
       ),
+    );
+  }
+
+  Widget _buildTaskList(List<SetNewTask> tasks) {
+    if (tasks.isEmpty) {
+      return const Center(
+        child: Text("No tasks here!", style: TextStyle(color: Colors.white70)),
+      );
+    }
+
+    return ListView.builder(
+      itemCount: tasks.length,
+      itemBuilder: (context, index) {
+        final task = tasks[index];
+        return Slidable(
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            children: [
+              SlidableAction(
+                onPressed: (context) {
+                  setState(() {
+                    int masterIndex = _tasks.indexOf(task);
+                    StorageService.deleteFromTaskList(masterIndex);
+                    _loadTasks();
+                  });
+                },
+                backgroundColor: Colors.red,
+                icon: Icons.delete,
+                label: 'Delete',
+              ),
+            ],
+          ),
+          child: Card(
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            color: const Color.fromARGB(255, 211, 193, 211),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ListTile(
+              title: Text(
+                task.taskName,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(task.taskDescription, maxLines: 1),
+              trailing: IconButton(
+                icon: Icon(
+                  task.isDone ? null : Icons.check_circle,
+                  color: task.isDone ? null : Colors.green,
+                ),
+                onPressed: () {
+                  setState(() {
+                    int masterIndex = _tasks.indexOf(task);
+                    StorageService.isTaskDone(masterIndex);
+                    _loadTasks();
+                  });
+                },
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

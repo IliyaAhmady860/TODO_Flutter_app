@@ -2,13 +2,31 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../task_model.dart'; // <--- Check this path!
+import '../task_model.dart';
 
 class StorageService {
   static late SharedPreferences _prefs;
 
   static Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
+  }
+
+  static Future<void> deleteFromTaskList(int index) async {
+    // 1. Get the current list of tasks
+    List<SetNewTask> tasks = getAllTasks();
+
+    // 2. Check if index is valid to avoid crashes
+    if (index >= 0 && index < tasks.length) {
+      tasks.removeAt(index);
+
+      // 3. Encode the updated list back to JSON
+      final String jsonString = jsonEncode(
+        tasks.map((t) => t.toMap()).toList(),
+      );
+
+      // 4. Save using the correct key: 'tasks_list'
+      await _prefs.setString('tasks_list', jsonString);
+    }
   }
 
   static Future<void> saveTask(SetNewTask task) async {

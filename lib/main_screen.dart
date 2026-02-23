@@ -55,6 +55,15 @@ class _MainScreenState extends State<MainScreen> {
                     color: const Color.fromARGB(255, 211, 193, 211),
                   ),
                   child: ListTile(
+                    trailing: IconButton(
+                      icon: const Icon(Icons.done, color: Colors.red),
+                      onPressed: () {
+                        setState(() {
+                          StorageService.deleteFromTaskList(index);
+                          _loadTasks();
+                        });
+                      },
+                    ),
                     title: Text(
                       task.taskName,
                       style: const TextStyle(fontWeight: FontWeight.bold),

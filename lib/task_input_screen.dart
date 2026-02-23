@@ -25,7 +25,7 @@ class _TaskInputState extends State<TaskInput> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: const Color.fromARGB(255, 63, 78, 91),
         title: const Text(
           "To do list",
           style: TextStyle(color: Colors.black, fontSize: 20),
@@ -33,23 +33,62 @@ class _TaskInputState extends State<TaskInput> {
         centerTitle: true,
       ),
       body: Form(
-        key: _formKey, // 1. Assign the key here
+        key: _formKey,
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                // 2. Changed to TextFormField
                 controller: nameFieldController,
+                style: const TextStyle(
+                  color: Colors.white,
+                ), // Makes typed text visible
                 validator: (value) => (value == null || value.isEmpty)
                     ? "Name is required"
                     : null,
                 maxLength: 20,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(10),
-                  label: Text("Task Name"),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(300)),
+
+                decoration: InputDecoration(
+                  counterStyle: const TextStyle(color: Colors.white),
+
+                  filled: true,
+                  fillColor: const Color.fromARGB(
+                    255,
+                    63,
+                    78,
+                    91,
+                  ), // Matches your AppBar
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  labelText: "Task Name",
+                  labelStyle: const TextStyle(color: Colors.white70),
+                  // Use enabledBorder to define the "idle" state
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none, // Removes the ugly black line
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: const BorderSide(
+                      color: Colors.blue,
+                      width: 1,
+                    ), // Subtle blue glow when typing
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 1,
+                    ),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: const BorderSide(
+                      color: Colors.redAccent,
+                      width: 1,
+                    ),
                   ),
                 ),
               ),
@@ -57,13 +96,24 @@ class _TaskInputState extends State<TaskInput> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: TextFormField(
-                // 2. Changed to TextFormField
                 controller: descriptionFieldController,
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(10),
-                  label: Text("Task Description"),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(300)),
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: const Color.fromARGB(255, 63, 78, 91),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  labelText: "Task Description",
+                  labelStyle: const TextStyle(color: Colors.white70),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: const BorderSide(color: Colors.blue, width: 1),
                   ),
                 ),
               ),
@@ -73,6 +123,7 @@ class _TaskInputState extends State<TaskInput> {
       ),
       floatingActionButton: FloatingActionButton.small(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+        backgroundColor: Colors.blue,
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             SetNewTask newTask = SetNewTask(
@@ -83,8 +134,10 @@ class _TaskInputState extends State<TaskInput> {
             if (context.mounted) Navigator.pop(context);
           }
         },
+
         child: const Icon(Icons.done),
       ),
+      backgroundColor: const Color.fromARGB(255, 52, 64, 86),
     );
   }
 }

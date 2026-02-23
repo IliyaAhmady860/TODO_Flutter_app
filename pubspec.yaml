@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.5.4
+  flutter_slidable: ^4.0.3 
 
 dev_dependencies:
   flutter_test:

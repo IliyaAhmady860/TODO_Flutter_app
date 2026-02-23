@@ -11,24 +11,6 @@ class StorageService {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  static Future<void> deleteFromTaskList(int index) async {
-    // 1. Get the current list of tasks
-    List<SetNewTask> tasks = getAllTasks();
-
-    // 2. Check if index is valid to avoid crashes
-    if (index >= 0 && index < tasks.length) {
-      tasks.removeAt(index);
-
-      // 3. Encode the updated list back to JSON
-      final String jsonString = jsonEncode(
-        tasks.map((t) => t.toMap()).toList(),
-      );
-
-      // 4. Save using the correct key: 'tasks_list'
-      await _prefs.setString('tasks_list', jsonString);
-    }
-  }
-
   static Future<void> saveTask(SetNewTask task) async {
     final List<SetNewTask> currentTasks = getAllTasks();
     currentTasks.add(task);
@@ -39,6 +21,28 @@ class StorageService {
     );
 
     await _prefs.setString('tasks_list', jsonString);
+  }
+
+  static Future<void> deleteFromTaskList(int index) async {
+    List<SetNewTask> tasks = getAllTasks();
+    if (index >= 0 && index < tasks.length) {
+      tasks.removeAt(index);
+      final String jsonString = jsonEncode(
+        tasks.map((t) => t.toMap()).toList(),
+      );
+      await _prefs.setString('tasks_list', jsonString);
+    }
+  }
+
+  static Future<void> isTaskDone(int index) async {
+    List<SetNewTask> tasks = getAllTasks();
+    if (index >= 0 && index < tasks.length) {
+      tasks[index].isDone = true;
+      final String jsonString = jsonEncode(
+        tasks.map((t) => t.toMap()).toList(),
+      );
+      await _prefs.setString('tasks_list', jsonString);
+    }
   }
 
   static List<SetNewTask> getAllTasks() {

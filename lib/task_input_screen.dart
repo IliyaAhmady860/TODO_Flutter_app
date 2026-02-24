@@ -86,8 +86,12 @@ class _TaskInputState extends State<TaskInput> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: TextFormField(
                 controller: descriptionFieldController,
+                maxLines: 20,
+                minLines: 1,
+                keyboardType: TextInputType.multiline,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
+                  counterStyle: const TextStyle(color: Colors.white),
                   filled: true,
                   fillColor: const Color.fromARGB(255, 63, 78, 91),
                   contentPadding: const EdgeInsets.symmetric(

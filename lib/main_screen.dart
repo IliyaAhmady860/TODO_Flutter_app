@@ -75,57 +75,67 @@ class _MainScreenState extends State<MainScreen> {
       );
     }
 
-    return ListView.builder(
-      itemCount: tasks.length,
-      itemBuilder: (context, index) {
-        final task = tasks[index];
-        return Slidable(
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              SlidableAction(
-                onPressed: (context) {
-                  setState(() {
-                    int masterIndex = _tasks.indexOf(task);
-                    StorageService.deleteFromTaskList(masterIndex);
-                    _loadTasks();
-                  });
-                },
-                backgroundColor: Colors.red,
-                icon: Icons.delete,
-                label: 'Delete',
-              ),
-            ],
-          ),
-          child: Card(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            color: const Color.fromARGB(255, 211, 193, 211),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: ListTile(
-              title: Text(
-                task.taskName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(task.taskDescription, maxLines: 1),
-              trailing: IconButton(
-                icon: Icon(
-                  task.isDone ? null : Icons.check_circle,
-                  color: task.isDone ? null : Colors.green,
+    return SlidableAutoCloseBehavior(
+      child: ListView.builder(
+        itemCount: tasks.length,
+        itemBuilder: (context, index) {
+          final task = tasks[index];
+          return Slidable(
+            key: ValueKey(task.taskName),
+            startActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              extentRatio: 0.25,
+              children: [
+                SlidableAction(
+                  onPressed: (context) {
+                    setState(() {
+                      int masterIndex = _tasks.indexOf(task);
+                      StorageService.deleteFromTaskList(masterIndex);
+                      _loadTasks();
+                    });
+                  },
+                  backgroundColor: Colors.red,
+                  icon: Icons.delete,
+                  label: 'Delete',
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                onPressed: () {
-                  setState(() {
-                    int masterIndex = _tasks.indexOf(task);
-                    StorageService.isTaskDone(masterIndex);
-                    _loadTasks();
-                  });
-                },
+              ],
+            ),
+            child: Card(
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              color: const Color.fromARGB(255, 211, 193, 211),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: ListTile(
+                onTap: () {if (task.taskDescription != '') {
+                  Navigator.of(context).pushNamed("/each_task_description_screen", arguments: task);
+                }},
+                title: Text(
+                  task.taskName,
+                  style: const TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),
+                ),
+                subtitle: Text(task.taskDescription, maxLines: 1 ,overflow: TextOverflow.ellipsis),
+                trailing: IconButton(
+                  icon: Icon(
+                    task.isDone ? null : Icons.check_circle,
+                    color: task.isDone ? null : Colors.green,
+                  ),
+                  onPressed: !task.isDone
+                      ? () {
+                          setState(() {
+                            int masterIndex = _tasks.indexOf(task);
+                            StorageService.isTaskDone(masterIndex);
+                            _loadTasks();
+                          });
+                        }
+                      : null,
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

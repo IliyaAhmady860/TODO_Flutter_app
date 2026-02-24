@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list/each_task_description_screen.dart';
 import 'main_screen.dart';
 import 'task_input_screen.dart';
 import 'services/storage_service.dart';
@@ -19,6 +20,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/': (context) => const MainScreen(),
         '/task_input_screen': (context) => const TaskInput(),
+        '/each_task_description_screen': (context) => const TaskScreen(),
       },
     );
   }

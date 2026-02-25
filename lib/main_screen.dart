@@ -108,14 +108,21 @@ class _MainScreenState extends State<MainScreen> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: ListTile(
-                onTap: () {if (task.taskDescription != '') {
-                  Navigator.of(context).pushNamed("/each_task_description_screen", arguments: task);
-                }},
+                onTap: () => Navigator.of(
+                  context,
+                ).pushNamed("/each_task_description_screen", arguments: task),
                 title: Text(
                   task.taskName,
-                  style: const TextStyle(fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                subtitle: Text(task.taskDescription, maxLines: 1 ,overflow: TextOverflow.ellipsis),
+                subtitle: Text(
+                  task.taskDescription,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 trailing: IconButton(
                   icon: Icon(
                     task.isDone ? null : Icons.check_circle,

@@ -10,14 +10,26 @@ class TaskScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 63, 78, 91),
-        title:  Text("To Do: ${task.taskName}", style: TextStyle(color: Colors.white)),
+        title: Text(
+          "To Do: ${task.taskName}",
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text(task.taskDescription, style: TextStyle(color: Colors.white, fontSize: 20,fontStyle: FontStyle.italic),),
+        child: Text(
+          task.taskDescription.isEmpty
+              ? 'No description for this Task'
+              : task.taskDescription,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
       ),
-        backgroundColor: const Color.fromARGB(255, 52, 64, 86),
+      backgroundColor: const Color.fromARGB(255, 52, 64, 86),
     );
   }
 }
